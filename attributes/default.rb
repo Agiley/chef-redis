@@ -18,31 +18,37 @@
 # limitations under the License.
 
 # Global Options
-default['redis']['config_path']      = "/etc/redis/redis.conf"
-default['redis']['daemonize']        = "no"
-default['redis']['pidfile']          = "/var/run/redis.pid"
-default['redis']['port']             = "6379"
-default['redis']['bind']             = "127.0.0.1"
-default['redis']['unixsocket']       = nil
-default['redis']['unixsocketperm']   = nil
-default['redis']['timeout']          = "300"
-default['redis']['loglevel']         = "notice"
-default['redis']['logfile']          = "/var/log/redis/redis-server.log"
-default['redis']['syslog-enabled']   = "no"
-default['redis']['syslog-ident']     = "redis"
-default['redis']['syslog-facility']  = "LOCAL0"
-default['redis']['databases']        = 16
-default['redis']['save']             = {} #{ 900 => 1, 300 => 10, 60 => 1000 }
-default['redis']['rdbcompression']   = "yes"
-default['redis']['dbfilename']       = "dump.rdb"
-default['redis']['dir']              = "/var/lib/redis"
+default['redis']['config_path']                 = "/etc/redis/redis.conf"
+default['redis']['daemonize']                   = "no"
+default['redis']['pidfile']                     = "/var/run/redis.pid"
+default['redis']['port']                        = "6379"
+default['redis']['bind']                        = "127.0.0.1"
+default['redis']['unixsocket']                  = nil
+default['redis']['unixsocketperm']              = nil
+default['redis']['timeout']                     = "300"
+default['redis']['tcp-keepalive']               = "0"
+default['redis']['loglevel']                    = "notice"
+default['redis']['logfile']                     = "/var/log/redis/redis-server.log"
+default['redis']['syslog-enabled']              = "no"
+default['redis']['syslog-ident']                = "redis"
+default['redis']['syslog-facility']             = "LOCAL0"
+default['redis']['databases']                   = 16
+default['redis']['save']                        = {} #{ 900 => 1, 300 => 10, 60 => 1000 }
+default['redis']['stop-writes-on-bgsave-error'] = "yes"
+default['redis']['rdbcompression']              = "yes"
+default['redis']['rdbchecksum']                 = "yes"
+default['redis']['dbfilename']                  = "dump.rdb"
+default['redis']['dir']                         = "/var/lib/redis"
 
 # Replication
-default['redis']['slaveof']['ip']           = nil
-default['redis']['slaveof']['port']         = nil
-default['redis']['masterauth']              = nil
-default['redis']['slave-serve-stale-data']  = "yes"
-default['redis']['repl-ping-slave-period']  = 10
+default['redis']['slaveof']['ip']               = nil
+default['redis']['slaveof']['port']             = nil
+default['redis']['masterauth']                  = nil
+default['redis']['slave-serve-stale-data']      = "yes"
+default['redis']['slave-read-only']             = "yes"
+default['redis']['repl-ping-slave-period']      = 10
+default['redis']['repl-disable-tcp-nodelay']    = "no"
+default['redis']['slave-priority']              = 100
 
 # Security
 default['redis']['password']         = nil
@@ -60,23 +66,33 @@ default['redis']['no-appendfsync-on-rewrite']   = "no"
 default['redis']['auto-aof-rewrite-percentage'] = 100
 default['redis']['auto-aof-rewrite-min-size']   = "64mb"
 
+# Lua Scripting
+default['redis']['lua-time-limit']              = 5000
+
 # Slow Log
-default['redis']['slowlog-log-slower-than']  = 10000
-default['redis']['slowlog-max-len']          = 128
+default['redis']['slowlog-log-slower-than']     = 10000
+default['redis']['slowlog-max-len']             = 128
 
 # Advanced Options
 # Redis < 2.6, see https://raw.github.com/antirez/redis/2.6/00-RELEASENOTES
-default['redis']['hash-max-zipmap-entries']   = 512
-default['redis']['hash-max-zipmap-value']     = 64
+default['redis']['hash-max-zipmap-entries']     = 512
+default['redis']['hash-max-zipmap-value']       = 64
 
 #Redis >= 2.6
-default['redis']['hash-max-ziplist-entries']  = 512
-default['redis']['hash-max-ziplist-value']    = 64
+default['redis']['hash-max-ziplist-entries']    = 512
+default['redis']['hash-max-ziplist-value']      = 64
 
-default['redis']['list-max-ziplist-entries']  = 512
-default['redis']['list-max-ziplist-value']    = 64
-default['redis']['set-max-intset-entries']    = 512
-default['redis']['zset-max-ziplist-entries']  = 128
-default['redis']['zset-max-ziplist-value']    = 64
-default['redis']['activerehashing']           = "yes"
+default['redis']['list-max-ziplist-entries']    = 512
+default['redis']['list-max-ziplist-value']      = 64
+default['redis']['set-max-intset-entries']      = 512
+default['redis']['zset-max-ziplist-entries']    = 128
+default['redis']['zset-max-ziplist-value']      = 64
+default['redis']['activerehashing']             = "yes"
+
+default['redis']['client-output-buffer-limits'] = {
+  "normal"  =>  "0 0 0",
+  "slave"   =>  "256mb 64mb 60",
+  "pubsub"  =>  "32mb 8mb 60"
+}
+
 default['redis']['include']                   = [ ]
