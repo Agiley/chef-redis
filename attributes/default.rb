@@ -65,8 +65,14 @@ default['redis']['slowlog-log-slower-than']  = 10000
 default['redis']['slowlog-max-len']          = 128
 
 # Advanced Options
+# Redis < 2.6, see https://raw.github.com/antirez/redis/2.6/00-RELEASENOTES
 default['redis']['hash-max-zipmap-entries']   = 512
 default['redis']['hash-max-zipmap-value']     = 64
+
+#Redis >= 2.6
+default['redis']['hash-max-ziplist-entries']  = 512
+default['redis']['hash-max-ziplist-value']    = 64
+
 default['redis']['list-max-ziplist-entries']  = 512
 default['redis']['list-max-ziplist-value']    = 64
 default['redis']['set-max-intset-entries']    = 512
