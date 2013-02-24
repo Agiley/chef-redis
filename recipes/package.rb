@@ -33,5 +33,5 @@ template "#{node[:redis][:config_path]}" do
   group "root"
   mode 0644
 
-  notifies :restart, resources(:service => "redis")
+  notifies :restart, resources(:service => "redis"), :immediately
 end
