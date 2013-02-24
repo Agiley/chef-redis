@@ -12,33 +12,76 @@ PIDFILE="<%= node[:redis][:pidfile] %>"
 REDISPORT="<%= node[:redis][:port] %>"
 CONF="<%= node[:redis][:config_path] %>"
 
+startRedis()
+{
+  statusRedis
+  STATUS=$?
+  if [ $STATUS -eq 3 ] || [ $STATUS -eq 1 ]
+  then
+    echo "[Action]: Starting Redis server..."
+    $EXEC $CONF
+    sleep 1
+    statusRedis
+  fi
+}
+
+stopRedis()
+{
+  statusRedis
+  if [ $? -eq 0 ]
+  then
+    PID=$(cat $PIDFILE)
+    echo "[Action]: Stopping ..."
+    $CLIEXEC -p $REDISPORT shutdown
+    while [ -x /proc/${PID} ]
+    do
+      echo "Waiting for Redis to shutdown ..."
+      sleep 1
+    done
+    echo "Redis stopped"
+  fi
+}
+
+statusRedis()
+{
+  if [ ! -f $PIDFILE ]
+  then
+    if [ `ps aux | grep redis | grep $CONF | wc -l` -gt 1 ]
+    then
+      echo "[Status]: There is a redis process running, but no PID file"
+      return 4
+    else
+      echo "[Status]: PID file '$PIDFILE' does not exist, process is not running"
+      return 3
+    fi
+  else
+    PID=$(cat $PIDFILE)
+    if [ `ps aux | grep redis | grep $CONF | grep $PID | wc -l` -gt 0 ]
+    then
+      echo "[Status]: Running with PID $PID and config '$CONF'"
+      return 0
+    else
+      echo "[Status]: Redis is not running, but PID file '$PIDFILE' exists"
+      return 1
+    fi
+  fi
+}
+
 case "$1" in
     start)
-        if [ -f $PIDFILE ]
-        then
-                echo "$PIDFILE exists, process is already running or crashed"
-        else
-                echo "Starting Redis server..."
-                $EXEC $CONF
-        fi
+        startRedis
         ;;
     stop)
-        if [ ! -f $PIDFILE ]
-        then
-                echo "$PIDFILE does not exist, process is not running"
-        else
-                PID=$(cat $PIDFILE)
-                echo "Stopping ..."
-                $CLIEXEC -p $REDISPORT shutdown
-                while [ -x /proc/${PID} ]
-                do
-                    echo "Waiting for Redis to shutdown ..."
-                    sleep 1
-                done
-                echo "Redis stopped"
-        fi
+        stopRedis
+        ;;
+    restart)
+        stopRedis
+        startRedis
+        ;;
+    status)
+        statusRedis
         ;;
     *)
-        echo "Please use start or stop as first argument"
+        echo "Please use start | stop | restart | status as first argument"
         ;;
 esac

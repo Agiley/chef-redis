@@ -76,7 +76,7 @@ if node['redis']['source']['create_service']
   node.set['redis']['daemonize'] = "yes"
 
   service "redis" do
-    supports  :status => false, :restart => false, :reload => false
+    supports  :status => true, :restart => true, :reload => false
   end
 
   template "/etc/init.d/redis" do
@@ -85,7 +85,7 @@ if node['redis']['source']['create_service']
     group   "root"
     mode    "0755"
 
-    notifies :restart, "service[redis]"
+    notifies :restart, resources(:service => "redis")
   end
 
   directory File.dirname("#{node[:redis][:config_path]}") do
