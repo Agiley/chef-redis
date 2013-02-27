@@ -9,7 +9,9 @@ EXEC=/usr/local/bin/redis-server
 CLIEXEC=/usr/local/bin/redis-cli
 
 PIDFILE="<%= node[:redis][:pidfile] %>"
-REDISPORT="<%= node[:redis][:port] %>"
+REDIS_HOST="<%= node[:redis][:bind] %>"
+REDIS_PORT="<%= node[:redis][:port] %>"
+REDIS_PASSWORD="<%= node[:redis][:password] ? "-a #{node[:redis][:password]}" : "" %>"
 CONF="<%= node[:redis][:config_path] %>"
 
 startRedis()
@@ -32,7 +34,7 @@ stopRedis()
   then
     PID=$(cat $PIDFILE)
     echo "[Action]: Stopping ..."
-    $CLIEXEC -p $REDISPORT shutdown
+    $CLIEXEC -h $REDIS_HOST -p $REDIS_PORT $REDIS_PASSWORD shutdown
     while [ -x /proc/${PID} ]
     do
       echo "Waiting for Redis to shutdown ..."
