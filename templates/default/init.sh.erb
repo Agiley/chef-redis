@@ -15,12 +15,12 @@ NAME=redis-server
 DESC=redis-server
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON=/usr/bin/redis-server
-DAEMON_ARGS="<%= node[:redis][:config_path] %>"
-PIDFILE="<%= node[:redis][:pidfile] %>"
+DAEMON=<%= node[:redis][:source][:prefix] %>/redis-server
+DAEMON_ARGS=<%= node[:redis][:config_path] %>
+PIDFILE=<%= node[:redis][:pidfile] %>
 
-REDIS_USER="<%= node[:redis][:source][:user] ? node[:redis][:source][:user] : "redis" %>"
-REDIS_GROUP="<%= node[:redis][:source][:group] ? node[:redis][:source][:group] : "redis" %>"
+REDIS_USER=<%= node[:redis][:source][:user] ? node[:redis][:source][:user] : "redis" %>
+REDIS_GROUP=<%= node[:redis][:source][:group] ? node[:redis][:source][:group] : "redis" %>
  
 test -x $DAEMON || exit 0
 test -x $DAEMONBOOTSTRAP || exit 0

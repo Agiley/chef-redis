@@ -67,7 +67,7 @@ end
   directory dir do
     owner       redis_user
     group       redis_group
-    mode        "0750"
+    mode        "0755"
     recursive   true
   end
 end
