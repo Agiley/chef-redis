@@ -15,7 +15,7 @@ NAME=redis-server
 DESC=redis-server
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON=<%= node[:redis][:source][:prefix] %>/redis-server
+DAEMON=<%= node[:redis][:source][:prefix] %>/bin/redis-server
 DAEMON_ARGS=<%= node[:redis][:config_path] %>
 PIDFILE=<%= node[:redis][:pidfile] %>
 

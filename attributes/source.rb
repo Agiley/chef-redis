@@ -19,7 +19,7 @@
 # limitations under the License.
 
 default['redis']['source']['version'] = "2.8.9"
-default['redis']['source']['prefix']  = "/usr/local/bin"
+default['redis']['source']['prefix']  = "/usr/local"
 
 default['redis']['source']['tar_url']   =
   "http://download.redis.io/releases/redis-#{node['redis']['source']['version']}.tar.gz"
