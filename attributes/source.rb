@@ -18,12 +18,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['redis']['source']['version'] = "2.8.9"
+default['redis']['source']['version'] = "3.2.0"
 default['redis']['source']['prefix']  = "/usr/local"
 
 default['redis']['source']['tar_url']   =
   "http://download.redis.io/releases/redis-#{node['redis']['source']['version']}.tar.gz"
-default['redis']['source']['tar_checksum']   = "003ccdc175816e0a751919cf508f1318e54aac1e"
+default['redis']['source']['tar_checksum']   = "0c1820931094369c8cc19fc1be62f598bc5961ca"
 
 default['redis']['source']['create_service']  = true
 
