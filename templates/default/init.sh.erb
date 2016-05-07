@@ -23,7 +23,6 @@ REDIS_USER=<%= node[:redis][:source][:user] ? node[:redis][:source][:user] : "re
 REDIS_GROUP=<%= node[:redis][:source][:group] ? node[:redis][:source][:group] : "redis" %>
  
 test -x $DAEMON || exit 0
-test -x $DAEMONBOOTSTRAP || exit 0
  
 set -e
  
@@ -31,7 +30,7 @@ case "$1" in
   start)
 	echo -n "Starting $DESC: "
 	touch $PIDFILE
-	chown redis:redis $PIDFILE
+	chown $REDIS_USER:$REDIS_GROUP $PIDFILE
 	if start-stop-daemon --start --quiet --umask 007 --pidfile $PIDFILE --chuid $REDIS_USER:$REDIS_GROUP --exec $DAEMON -- $DAEMON_ARGS
 	then
 		echo "$NAME."
