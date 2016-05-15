@@ -73,19 +73,35 @@ end
 end
 
 if node['redis']['source']['create_service']
-  node.set['redis']['daemonize'] = "yes"
+  node.set['redis']['daemonize']      =   "yes"
+  
+  if platform?('ubuntu') && Chef::VersionConstraint.new('>= 15.04').include?(node['platform_version'])
+    node.set['redis']['supervised']   =   "systemd"
+    
+    template "/etc/systemd/system/redis.service" do
+      source 'systemd.conf.erb'
+      owner 'root'
+      group 'root'
+      mode 00744
+      notifies :run, 'execute[systemctl daemon-reload]', :immediately
+    end
 
-  service "redis" do
-    supports  :status => true, :restart => true, :reload => false
+    execute 'systemctl daemon-reload' do
+      action :nothing
+    end
+  else
+    template "/etc/init.d/redis" do
+      source  "init.sh.erb"
+      owner   "root"
+      group   "root"
+      mode    "0755"
+    end
   end
-
-  template "/etc/init.d/redis" do
-    source  "init.sh.erb"
-    owner   "root"
-    group   "root"
-    mode    "0755"
-
-    notifies :restart, resources(:service => "redis")
+  
+  service "redis" do
+    service_provider = platform?('ubuntu') ? find_provider : nil
+    supports :status => true, :restart => true, :reload => true
+    action   :enable
   end
 
   directory File.dirname("#{node[:redis][:config_path]}") do

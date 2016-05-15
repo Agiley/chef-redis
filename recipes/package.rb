@@ -21,10 +21,9 @@
 package "redis-server"
 
 service "redis" do
-  start_command "/etc/init.d/redis-server start #{node['redis']['config_path']}"
-  stop_command "/etc/init.d/redis-server stop"
-  restart_command "/etc/init.d/redis-server restart"
-  action :start
+  service_provider = platform?('ubuntu') ? find_provider : nil
+  supports :status => true, :restart => true, :reload => true
+  action   :enable
 end
 
 template "#{node[:redis][:config_path]}" do

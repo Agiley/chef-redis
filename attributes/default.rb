@@ -20,6 +20,7 @@
 # Global Options
 default['redis']['config_path']                 = "/etc/redis/redis.conf"
 default['redis']['daemonize']                   = "no"
+default['redis']['supervised']                  = "no"
 default['redis']['pidfile']                     = "/var/run/redis.pid"
 default['redis']['port']                        = "6379"
 default['redis']['bind']                        = "127.0.0.1"
