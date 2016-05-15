@@ -99,7 +99,7 @@ if node['redis']['source']['create_service']
   end
   
   service "redis" do
-    service_provider = platform?('ubuntu') ? find_provider : nil
+    provider platform?('ubuntu') ? find_provider : nil
     supports :status => true, :restart => true, :reload => true
     action   :enable
   end

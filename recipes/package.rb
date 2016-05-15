@@ -21,7 +21,7 @@
 package "redis-server"
 
 service "redis" do
-  service_provider = platform?('ubuntu') ? find_provider : nil
+  provider platform?('ubuntu') ? find_provider : nil
   supports :status => true, :restart => true, :reload => true
   action   :enable
 end
