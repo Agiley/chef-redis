@@ -8,8 +8,11 @@ After=network.target remote-fs.target nss-lookup.target
 Type=forking
 PIDFile=<%= node[:redis][:pidfile] %>
 
+<% unless ['/var/run', '/run'].include?(File.dirname(node[:redis][:pidfile])) %>
 ExecStartPre=/bin/mkdir -p <%= File.dirname(node[:redis][:pidfile]) %>
 ExecStartPre=/bin/chown -R <%= node[:redis][:source][:user] %>:<%= node[:redis][:source][:group] %> <%= File.dirname(node[:redis][:pidfile]) %>
+<% end %>
+
 ExecStart=/sbin/start-stop-daemon --start --chuid <%= node[:redis][:source][:user] %>:<%= node[:redis][:source][:group] %> --pidfile <%= node[:redis][:pidfile] %> --umask 007 --exec <%= node[:redis][:source][:prefix] %>/bin/redis-server -- <%= node[:redis][:config_path] %>
 ExecReload=/bin/kill -USR2 $MAINPID
 ExecStop=<%= node[:redis][:source][:prefix] %>/bin/redis-cli shutdown
