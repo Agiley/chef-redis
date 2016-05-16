@@ -63,12 +63,13 @@ user redis_user do
   system  true
 end
 
-[File.dirname(node[:redis][:config_path]), File.dirname(node[:redis][:logfile]), node[:redis][:dir]].each do |dir|
+[node[:redis][:dir], File.dirname(node[:redis][:config_path]), File.dirname(node[:redis][:logfile]), File.dirname(node[:redis][:pidfile])].each do |dir|
   directory dir do
     owner       redis_user
     group       redis_group
     mode        "0755"
     recursive   true
+    not_if { ::File.exists?(dir) }
   end
 end
 
@@ -79,10 +80,10 @@ if node['redis']['source']['create_service']
     node.set['redis']['supervised']   =   "systemd"
     
     template "/etc/systemd/system/redis.service" do
-      source 'systemd.conf.erb'
+      source 'systemd/redis.service.erb'
       owner 'root'
       group 'root'
-      mode 00744
+      mode 0644
       notifies :run, 'execute[systemctl daemon-reload]', :immediately
     end
 
@@ -91,7 +92,7 @@ if node['redis']['source']['create_service']
     end
   else
     template "/etc/init.d/redis" do
-      source  "init.sh.erb"
+      source  "init/init.sh.erb"
       owner   "root"
       group   "root"
       mode    "0755"
