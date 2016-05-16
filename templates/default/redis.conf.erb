@@ -14,7 +14,7 @@
 # units are case insensitive so 1GB 1Gb 1gB are all the same.
 
 # By default Redis does not run as a daemon. Use 'yes' if you need it.
-# Note that Redis will write a pid file in <%= ['redis']['pidfile'] %> when daemonized.
+# Note that Redis will write a pid file in <%= node['redis']['pidfile'] %> when daemonized.
 daemonize <%= node['redis']['daemonize'] %>
 
 # If you run Redis from upstart or systemd, Redis can interact with your
