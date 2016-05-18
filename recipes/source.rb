@@ -100,9 +100,9 @@ if node['redis']['source']['create_service']
   end
   
   service "redis" do
-    provider platform?('ubuntu') ? find_provider : nil
     supports :status => true, :restart => true, :reload => true
     action   :enable
+    provider (platform?('ubuntu') && Chef::VersionConstraint.new('>= 15.04').include?(node['platform_version'])) ? Chef::Provider::Service::Systemd : nil
   end
 
   directory File.dirname("#{node[:redis][:config_path]}") do
