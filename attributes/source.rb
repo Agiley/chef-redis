@@ -18,21 +18,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['redis']['source']['version'] = "3.2.0"
-default['redis']['source']['prefix']  = "/usr/local"
+default['redis']['source']['version']         =   "3.2.3"
+default['redis']['source']['prefix']          =   "/usr/local"
 
-default['redis']['source']['tar_url']   =
-  "http://download.redis.io/releases/redis-#{node['redis']['source']['version']}.tar.gz"
-default['redis']['source']['tar_checksum']   = "0c1820931094369c8cc19fc1be62f598bc5961ca"
+default['redis']['source']['tar_url']         =   "http://download.redis.io/releases/redis-#{node['redis']['source']['version']}.tar.gz"
+# How to calculate checksum: curl -L -s http://download.redis.io/releases/redis-3.2.3.tar.gz | shasum -a 256 | cut -c-12
+default['redis']['source']['tar_checksum']    =   "674e9c38472e"
 
-default['redis']['source']['create_service']  = true
+default['redis']['source']['create_service']  =   true
 
-default['redis']['source']['user']  = "redis"
-default['redis']['source']['group'] = "redis"
+default['redis']['source']['user']            =   "redis"
+default['redis']['source']['group']           =   "redis"
 
 case platform
 when "ubuntu","debian"
-  node.set['redis']['source']['pkgs'] = %w{build-essential}
+  node.set['redis']['source']['pkgs']         =   %w{build-essential}
 else
-  node.set['redis']['source']['pkgs'] = []
+  node.set['redis']['source']['pkgs']         =   []
 end
