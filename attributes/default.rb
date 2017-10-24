@@ -18,6 +18,8 @@
 # limitations under the License.
 
 # Global Options
+default['redis']['includes']                    = []
+default['redis']['modules']                     = []
 default['redis']['config_path']                 = "/etc/redis/redis.conf"
 default['redis']['daemonize']                   = "no"
 default['redis']['supervised']                  = "no"
@@ -26,15 +28,15 @@ default['redis']['port']                        = "6379"
 default['redis']['bind']                        = "127.0.0.1"
 default['redis']['unixsocket']                  = nil
 default['redis']['unixsocketperm']              = nil
-default['redis']['timeout']                     = "300"
-default['redis']['tcp-keepalive']               = "0"
+default['redis']['timeout']                     = "0"
+default['redis']['tcp-keepalive']               = "300"
 default['redis']['loglevel']                    = "notice"
 default['redis']['logfile']                     = "/var/log/redis/redis-server.log"
 default['redis']['syslog-enabled']              = "no"
 default['redis']['syslog-ident']                = "redis"
 default['redis']['syslog-facility']             = "LOCAL0"
 default['redis']['databases']                   = 16
-default['redis']['save']                        = {} #{ 900 => 1, 300 => 10, 60 => 1000 }
+default['redis']['save']                        = { 900 => 1, 300 => 10, 60 => 10_000 }
 default['redis']['stop-writes-on-bgsave-error'] = "yes"
 default['redis']['rdbcompression']              = "yes"
 default['redis']['rdbchecksum']                 = "yes"
@@ -53,16 +55,16 @@ default['redis']['slave-priority']              = 100
 
 # Security
 default['redis']['password']         = nil
-default['redis']['rename-command']   = { }
+default['redis']['rename-command']   = {}
 
 # Limits
 default['redis']['maxclients']       = nil
 default['redis']['maxmemory']        = nil
 default['redis']['maxmemory-policy'] = nil
 
-# Append Only Mode
+# Append Only Mode
 default['redis']['appendonly']                  = "no"
-default['redis']['appendfsync']                 = "everysec" # everysec, always, no
+default['redis']['appendfsync']                 = "everysec"
 default['redis']['no-appendfsync-on-rewrite']   = "no"
 default['redis']['auto-aof-rewrite-percentage'] = 100
 default['redis']['auto-aof-rewrite-min-size']   = "64mb"
@@ -75,16 +77,8 @@ default['redis']['slowlog-log-slower-than']     = 10000
 default['redis']['slowlog-max-len']             = 128
 
 # Advanced Options
-# Redis < 2.6, see https://raw.github.com/antirez/redis/2.6/00-RELEASENOTES
-default['redis']['hash-max-zipmap-entries']     = 512
-default['redis']['hash-max-zipmap-value']       = 64
-
-#Redis >= 2.6
 default['redis']['hash-max-ziplist-entries']    = 512
 default['redis']['hash-max-ziplist-value']      = 64
-
-default['redis']['list-max-ziplist-entries']    = 512
-default['redis']['list-max-ziplist-value']      = 64
 default['redis']['set-max-intset-entries']      = 512
 default['redis']['zset-max-ziplist-entries']    = 128
 default['redis']['zset-max-ziplist-value']      = 64
@@ -95,5 +89,3 @@ default['redis']['client-output-buffer-limits'] = {
   "slave"   =>  "256mb 64mb 60",
   "pubsub"  =>  "32mb 8mb 60"
 }
-
-default['redis']['include']                   = [ ]
