@@ -1195,7 +1195,6 @@ activerehashing <%= node['redis']['activerehashing'] %>
 <% node['redis']['client-output-buffer-limits'].each do |type, limit| %>
 <%= "client-output-buffer-limit #{type} #{limit}" %>
 <% end %>
-<% end %>
 
 # Redis calls an internal function to perform many background tasks, like
 # closing connections of clients in timeout, purging expired keys that are
