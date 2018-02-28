@@ -18,12 +18,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default['redis']['source']['version']         =   "4.0.2"
+default['redis']['source']['version']         =   "4.0.8"
 default['redis']['source']['prefix']          =   "/usr/local"
 
 default['redis']['source']['tar_url']         =   "http://download.redis.io/releases/redis-#{node['redis']['source']['version']}.tar.gz"
-# How to calculate checksum: curl -L -s http://download.redis.io/releases/redis-4.0.2.tar.gz | shasum -a 256 | cut -c-12
-default['redis']['source']['tar_checksum']    =   "b1a0915dbc91"
+# How to calculate checksum: curl -L -s http://download.redis.io/releases/redis-4.0.8.tar.gz | shasum -a 256 | cut -c-12
+default['redis']['source']['tar_checksum']    =   "ff0c38b8c156"
 
 default['redis']['source']['create_service']  =   true
 
