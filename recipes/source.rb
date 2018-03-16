@@ -74,10 +74,10 @@ end
 end
 
 if node['redis']['source']['create_service']
-  node.set['redis']['daemonize']      =   "yes"
+  node.default['redis']['daemonize']      =   "yes"
   
   if platform?('ubuntu') && Chef::VersionConstraint.new('>= 15.04').include?(node['platform_version'])
-    node.set['redis']['supervised']   =   "systemd"
+    node.default['redis']['supervised']   =   "systemd"
     
     template "/etc/systemd/system/redis.service" do
       source 'systemd/redis.service.erb'
